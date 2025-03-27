@@ -70,7 +70,10 @@
             align-items: center;
             text-align: center;
             position: relative;
-            background-image: url('c:\Users\jack\Downloads\pexels-athena-2582937.jpg') no-repeat center center/cover;
+            background-image: url('https://images.pexels.com/photos/335393/pexels-photo-335393.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
         }
 
         .welcome-section::after {
@@ -80,7 +83,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.6); /* Slight opacity */
+            background: rgba(0, 0, 0, 0.6);
         }
 
         .welcome-text {
@@ -134,6 +137,7 @@
             color: white;
             font-size: 2rem;
             font-weight: bold;
+            background-repeat: no-repeat;
             text-shadow: 2px 2px 10px black;
             position: relative;
         }
@@ -151,6 +155,15 @@
         .parallax p {
             position: relative;
             z-index: 2;
+        }
+
+        /* Education Title Section */
+        .education-title {
+            padding: 50px;
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: white;
         }
 
         /* Context Section */
@@ -172,15 +185,6 @@
             border-radius: 8px;
         }
 
-        .context-right {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            padding: 20px;
-            text-align: center;
-            font-size: 1.2rem;
-            border-radius: 8px;
-        }
-
         /* Who Am I Section */
         .who-am-i {
             max-width: 800px;
@@ -188,6 +192,29 @@
             text-align: center;
             font-size: 2rem;
             font-weight: bold;
+        }
+
+        /* Footer */
+        .footer {
+            background: #111;
+            text-align: center;
+            padding: 20px;
+            margin-top: 50px;
+            font-size: 14px;
+        }
+
+        /* Closing Deal Section */
+        .closing-deal {
+            background: #111;
+            padding: 50px;
+            text-align: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        /* Skills and Expertise Section */
+        .skills-expertise {
+            padding: 50px;
         }
 
         /* Responsive */
@@ -206,6 +233,70 @@
                 grid-template-columns: 1fr;
             }
         }
+        /* From Uiverse.io by alexruix */ 
+.card {
+  color: #1b1b1b;
+  width: 190px;
+  height: 254px;
+  position: relative;
+  outline: 6px solid #f5f5f5;
+  border-radius: 8px;
+  line-height: 150%;
+  padding: 16px;
+  background: #ff930f;
+  background-blend-mode: multiply;
+  background: linear-gradient(to top, #ff930f, #ffcc33);
+  transition: background-color 1s ease-in-out;
+  overflow: hidden;
+}
+
+.card-front {
+  bottom: 16px;
+  left: 0;
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  transition: transform 1s cubic-bezier(0.785, 0.135, 0.150, 0.860);
+}
+
+.card-back {
+  transform: translateX(120%);
+  transition: transform 1s cubic-bezier(0.785, 0.135, 0.150, 0.860);
+}
+
+
+/*Text*/
+.title {
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+/*Text divider*/
+.title::after {
+  content: "";
+  display: block;
+  width: 50%;
+  border-radius: 50%;
+  height: 2px;
+  margin: 2px auto;
+  background-color: #1b1b1b;
+}
+
+
+/*Hover*/
+.card:hover {
+  background-color: #1b1b1b25;
+}
+
+.card:hover .card-front {
+  transform: translateX(-100%);
+}
+
+.card:hover .card-back {
+  transform: translateX(0);
+}
+
+
+
     </style>
 </head>
 
@@ -224,7 +315,7 @@
 
     <!-- Hero Section -->
     <section class="welcome-section">
-        <div class="welcome-text">A New Era Has Begunss</div>
+        <div class="welcome-text">A New Era Has Begun</div>
         <p class="hero-quote">
             "Cybersecurity isn’t about AI or AR. It’s about how fast you adapt and execute."
         </p>
@@ -233,11 +324,20 @@
     <!-- Grid Section -->
     <div class="grid-container">
         <div class="card">First Card</div>
-        <div class="card">Second Card</div>
+        <!-- From Uiverse.io by alexruix --> 
+<div class="card">
+    <div class="card-front">
+      <p class="title">John Doe</p>
+      <p class="subtitle">Web Dev</p>
+    </div>
+    <div class="card-back">
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+    </div>
+  </div>
     </div>
 
-    <!-- Parallax Breakers -->
-    <div class="parallax" style="background-image: url('assets/img/parallax1.jpg');">
+    <!-- Parallax Sections -->
+    <div class="parallax" style="background-image: url('https://images.pexels.com/photos/2691663/pexels-photo-2691663.jpeg');">
         <p>AI and cybersecurity are evolving. Are you keeping up?</p>
     </div>
 
@@ -246,7 +346,7 @@
         <div class="context-card">Are you prepared?</div>
     </section>
 
-    <div class="parallax" style="background-image: url('assets/img/parallax2.jpg');">
+    <div class="parallax" style="background-image: url('https://images.pexels.com/photos/5584052/pexels-photo-5584052.jpeg');">
         <p>I don’t follow blueprints, I write them.</p>
     </div>
 
@@ -254,9 +354,51 @@
         <p>Explaining the AHE Algorithm here.</p>
     </section>
 
-    <div class="parallax" style="background-image: url('assets/img/parallax3.jpg');">
+    <div class="parallax" style="background-image: url('https://images.pexels.com/photos/1181345/pexels-photo-1181345.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1g');">
         <p>I break down the process, optimize the approach, and execute with precision.</p>
     </div>
+
+    <!-- Cards to Explain the Process -->
+    <div class="grid-container">
+        <div class="card">Process Card 1</div>
+        <div class="card">Process Card 2</div>
+    </div>
+
+    <!-- Skills and Expertise Section -->
+    <section class="skills-expertise">
+        <div class="parallax" style="background-image: url('https://images.pexels.com/photos/1181345/pexels-photo-1181345.jpeg');">
+            <p>Skills & Expertise</p>
+        </div>
+
+        <div class="grid-container">
+            <div class="card">Skill 1</div>
+            <div class="card">Skill 2</div>
+            <div class="card">Skill 3</div>
+            <div class="card">Skill 4</div>
+        </div>
+    </section>
+
+    <!-- Education Title Section -->
+    <section class="education-title">
+        <p>My Education Journey</p>
+        <img src="https://images.pexels.com/photos/1181345/pexels-photo-1181345.jpeg" alt="Education Image" style="width: 100%; border-radius: 8px;">
+    </section>
+
+    <!-- Education Section -->
+    <div class="grid-container">
+        <div class="card">Education Card 1</div>
+        <div class="card">Education Card 2</div>
+    </div>
+
+    <!-- Closing Deal Section -->
+    <section class="closing-deal">
+        <p>Why do you need me? The world is evolving quickly. I provide the skills, knowledge, and adaptability needed to stay ahead in the cybersecurity and tech fields. Let’s make the most of this new era.</p>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 Eleanor Apparel Limited. All Rights Reserved.</p>
+    </footer>
 
 </body>
 </html>
