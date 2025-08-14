@@ -1942,6 +1942,75 @@ button:hover svg {
     align-items: stretch;
   }
 }
+
+#encryption-section {
+  display: flex;
+  justify-content: center; /* centers the whole container horizontally */
+  gap: 40px; /* space between the two blocks */
+  padding: 20px;
+}
+
+#encryption-section > div {
+  flex: 1; /* each block takes equal width */
+  max-width: 450px; /* optional max width */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* center items horizontally inside each block */
+  box-sizing: border-box;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: #f9f9f9;
+}
+
+textarea {
+  width: 100%;
+  resize: vertical;
+  font-size: 1rem;
+  padding: 10px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+input[type="password"] {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 15px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button {
+  width: 50%;
+  padding: 10px 0;
+  font-size: 1rem;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  background-color: #3b82f6; /* blue */
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #2563eb; /* darker blue on hover */
+}
+
+pre {
+  width: 100%;
+  min-height: 80px;
+  background: #222;
+  color: #eee;
+  padding: 10px;
+  border-radius: 5px;
+  overflow-x: auto;
+  margin-top: 15px;
+  font-family: monospace;
+}
     </style>
 </head>
 
@@ -2150,6 +2219,34 @@ Blind: Most encryption doesn’t notice when it's being attacked — it just enc
   </div>
 </section>
 
+<section id="encryption-section">
+
+  <!-- Encrypt area -->
+  <div>
+    <h3>Encrypt Message</h3>
+    <textarea id="encrypt-message" placeholder="Enter message to encrypt" rows="5" cols="50"></textarea>
+    <br />
+    <input type="password" id="encrypt-password" placeholder="Enter password" />
+    <br />
+    <button onclick="encryptMessage()">Encrypt</button>
+    <pre id="encrypt-result"></pre>
+  </div>
+
+  <hr />
+
+  <!-- Decrypt area -->
+  <div>
+    <h3>Decrypt Message</h3>
+    <textarea id="decrypt-message" placeholder="Encrypted message will appear here" rows="5" cols="50" readonly></textarea>
+    <br />
+    <input type="password" id="decrypt-password" placeholder="Enter password" />
+    <br />
+    <button onclick="decryptMessage()">Decrypt</button>
+    <pre id="decrypt-result"></pre>
+  </div>
+
+</section>
+
     <!-- Skills and Expertise Section -->
     <section class="skills-expertise">
         <div class="parallax" style="background-image: url('https://images.pexels.com/photos/1181345/pexels-photo-1181345.jpeg');">
@@ -2299,6 +2396,63 @@ Blind: Most encryption doesn’t notice when it's being attacked — it just enc
 
   setTimeout(loadLiveNews, 300);
 })();
+
+const API_BASE = "https://ahesdk-production.up.railway.app"; // Replace with your actual API URL
+
+async function encryptMessage() {
+    const message = document.getElementById('encrypt-message').value.trim();
+    const password = document.getElementById('encrypt-password').value.trim();
+
+    if (!message || !password) {
+        alert("Please enter both message and password to encrypt.");
+        return;
+    }
+
+    try {
+        const res = await fetch(`${API_BASE}/encrypt`, {  // Use backticks only for URL interpolation
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message, password })
+        });
+        const data = await res.json();
+
+        if (data.error) {
+            document.getElementById('encrypt-result').innerText = `Error: ${data.error}`; // backticks
+        } else {
+            document.getElementById('encrypt-result').innerText = data.encrypted;
+            document.getElementById('decrypt-message').value = data.encrypted; // convenience copy
+        }
+    } catch (err) {
+        document.getElementById('encrypt-result').innerText = `Fetch error: ${err.message}`; // backticks
+    }
+}
+
+async function decryptMessage() {
+    const password = document.getElementById('decrypt-password').value.trim();
+
+    if (!password) {
+        alert("Please enter the password to decrypt.");
+        return;
+    }
+
+    try {
+        const res = await fetch(`${API_BASE}/decrypt`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ password })
+        });
+        const data = await res.json();
+
+        if (data.error) {
+            document.getElementById('decrypt-result').innerText = `Error: ${data.error}`; // backticks
+        } else {
+            document.getElementById('decrypt-result').innerText = data.decrypted;
+        }
+    } catch (err) {
+        document.getElementById('decrypt-result').innerText = `Fetch error: ${err.message}`; // backticks
+    }
+}
+
 </script>
 
 </html>
