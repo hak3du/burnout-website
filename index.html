@@ -2397,7 +2397,7 @@ Blind: Most encryption doesn’t notice when it's being attacked — it just enc
   setTimeout(loadLiveNews, 300);
 })();
 
-const API_BASE = "https://ahesdk-production.up.railway.app"; // Replace with your actual API URL
+const API_BASE = "https://ahesdk-production.up.railway.app"; // HTTPS URL of your Railway API
 
 async function encryptMessage() {
     const message = document.getElementById('encrypt-message').value.trim();
@@ -2409,21 +2409,23 @@ async function encryptMessage() {
     }
 
     try {
-        const res = await fetch(`${API_BASE}/encrypt`, {  // Use backticks only for URL interpolation
+        const res = await fetch(`${API_BASE}/encrypt`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ message, password })
         });
+
         const data = await res.json();
 
         if (data.error) {
-            document.getElementById('encrypt-result').innerText = `Error: ${data.error}`; // backticks
+            document.getElementById('encrypt-result').innerText = `Error: ${data.error}`;
         } else {
             document.getElementById('encrypt-result').innerText = data.encrypted;
-            document.getElementById('decrypt-message').value = data.encrypted; // convenience copy
+            document.getElementById('decrypt-message').value = data.encrypted;
         }
+
     } catch (err) {
-        document.getElementById('encrypt-result').innerText = `Fetch error: ${err.message}`; // backticks
+        document.getElementById('encrypt-result').innerText = `Fetch error: ${err.message}`;
     }
 }
 
@@ -2441,18 +2443,19 @@ async function decryptMessage() {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ password })
         });
+
         const data = await res.json();
 
         if (data.error) {
-            document.getElementById('decrypt-result').innerText = `Error: ${data.error}`; // backticks
+            document.getElementById('decrypt-result').innerText = `Error: ${data.error}`;
         } else {
             document.getElementById('decrypt-result').innerText = data.decrypted;
         }
+
     } catch (err) {
-        document.getElementById('decrypt-result').innerText = `Fetch error: ${err.message}`; // backticks
+        document.getElementById('decrypt-result').innerText = `Fetch error: ${err.message}`;
     }
 }
-
 </script>
 
 </html>
