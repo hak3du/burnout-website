@@ -2011,6 +2011,16 @@ pre {
   margin-top: 15px;
   font-family: monospace;
 }
+
+.ai3{
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
     </style>
 </head>
 
@@ -2118,6 +2128,7 @@ These are the backbone of quantum-resilient encryption.
     <div class="ai-right-column">
       <div class="ai-card3">
         <div class="ai-card3-front">
+          <img class="ai3" src="https://images.pexels.com/photos/936722/pexels-photo-936722.jpeg">
           <p class="ai-title">Boston Consulting</p>
           <p class="ai-subtitle">Group</p>
         </div>
@@ -2288,34 +2299,6 @@ Blind: Most encryption doesn’t notice when it's being attacked — it just enc
   <div class="banter-loader__box"></div>
 </div>
     </footer>
-<!-- From Uiverse.io by satyamchaudharydev --> 
-<button>
-  <div class="text">
-    <span>Back</span>
-    <span>to</span>
-    <span>top</span>
-  </div>
-  <div class="clone">
-    <span>Back</span>
-    <span>to</span>
-    <span>top</span>
-  </div>
-  <svg
-    stroke-width="2"
-    stroke="currentColor"
-    viewBox="0 0 24 24"
-    fill="none"
-    class="h-6 w-6"
-    xmlns="http://www.w3.org/2000/svg"
-    width="20px"
-  >
-    <path
-      d="M14 5l7 7m0 0l-7 7m7-7H3"
-      stroke-linejoin="round"
-      stroke-linecap="round"
-    ></path>
-  </svg>
-</button>
 
 </body>
 
@@ -2397,16 +2380,19 @@ Blind: Most encryption doesn’t notice when it's being attacked — it just enc
   setTimeout(loadLiveNews, 300);
 })();
 
-const API_BASE = "https://ahesdk-production.up.railway.app"; // HTTPS URL of your Railway API
+const API_BASE = "https://ahesdk-production.up.railway.app"; // Replace with your Railway API URL
 
 async function encryptMessage() {
     const message = document.getElementById('encrypt-message').value.trim();
     const password = document.getElementById('encrypt-password').value.trim();
+    const resultElement = document.getElementById('encrypt-result');
 
     if (!message || !password) {
         alert("Please enter both message and password to encrypt.");
         return;
     }
+
+    resultElement.innerText = "Encrypting..."; // Show a loading message
 
     try {
         const res = await fetch(`${API_BASE}/encrypt`, {
@@ -2415,27 +2401,41 @@ async function encryptMessage() {
             body: JSON.stringify({ message, password })
         });
 
+        if (!res.ok) {
+            throw new Error(`HTTP error! Status: ${res.status}`);
+        }
+
         const data = await res.json();
 
         if (data.error) {
-            document.getElementById('encrypt-result').innerText = `Error: ${data.error}`;
+            resultElement.innerText = `Error: ${data.error}`;
         } else {
-            document.getElementById('encrypt-result').innerText = data.encrypted;
-            document.getElementById('decrypt-message').value = data.encrypted;
+            // Display all returned information
+            resultElement.innerText = `
+Status: ${data.status || "N/A"}
+Encrypted: ${data.encrypted || "N/A"}
+Ciphertext Path: ${data.ciphertext_path || "N/A"}
+Metadata Path: ${data.metadata_path || "N/A"}
+PQC Profile: ${data.pqc_profile || "N/A"}
+Entropy Score: ${data.entropy_score || "N/A"}
+Anomaly Detected: ${data.anomaly_detected ? "Yes" : "No"}
+            `;
+            document.getElementById('decrypt-message').value = data.encrypted; // Autofill the encrypted message for decryption
         }
 
     } catch (err) {
-        document.getElementById('encrypt-result').innerText = `Fetch error: ${err.message}`;
+        resultElement.innerText = `Fetch error: ${err.message}`;
     }
-}
-
-async function decryptMessage() {
+}async function decryptMessage() {
     const password = document.getElementById('decrypt-password').value.trim();
+    const resultElement = document.getElementById('decrypt-result');
 
     if (!password) {
         alert("Please enter the password to decrypt.");
         return;
     }
+
+    resultElement.innerText = "Decrypting..."; // Show a loading message
 
     try {
         const res = await fetch(`${API_BASE}/decrypt`, {
@@ -2444,18 +2444,29 @@ async function decryptMessage() {
             body: JSON.stringify({ password })
         });
 
+        if (!res.ok) {
+            throw new Error(`HTTP error! Status: ${res.status}`);
+        }
+
         const data = await res.json();
 
         if (data.error) {
-            document.getElementById('decrypt-result').innerText = `Error: ${data.error}`;
+            resultElement.innerText = `Error: ${data.error}`;
         } else {
-            document.getElementById('decrypt-result').innerText = data.decrypted;
+            // Display all returned information
+            resultElement.innerText = `
+Status: ${data.status || "N/A"}
+Decrypted: ${data.decrypted || "N/A"}
+Entropy Score: ${data.entropy_score || "N/A"}
+Anomaly Detected: ${data.anomaly_detected ? "Yes" : "No"}
+            `;
         }
 
     } catch (err) {
-        document.getElementById('decrypt-result').innerText = `Fetch error: ${err.message}`;
+        resultElement.innerText = `Fetch error: ${err.message}`;
     }
 }
+
 </script>
 
 </html>
