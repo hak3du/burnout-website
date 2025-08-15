@@ -1178,63 +1178,79 @@ button:hover svg {
   align-items: stretch;
   justify-content: center;
 }
-
 .ai-card3 {
-  color: #1b1b1b;
-  width: 100%;
-  max-width: 320px;
-  height: 100%;
-  position: relative;
-  outline: 6px solid #f5f5f5;
-  border-radius: 8px;
-  line-height: 150%;
-  padding: 16px;
-  background: linear-gradient(to top, #96f576, #33fff1);
-  overflow: hidden;
-  transition: background-color 1s ease-in-out;
+    color: #1b1b1b;
+    width: 100%;
+    max-width: 320px;
+    height: 100%;
+    position: relative;
+    outline: 6px solid #f5f5f5;
+    border-radius: 8px;
+    line-height: 150%;
+    padding: 16px;
+    background: linear-gradient(to top, #96f576, #33fff1);
+    overflow: hidden;
+    transition: background-color 1s ease-in-out;
 }
-
 .ai-card3-front {
-  bottom: 16px;
-  left: 0;
-  position: absolute;
-  width: 100%;
-  text-align: center;
-  transition: transform 1s cubic-bezier(0.785, 0.135, 0.150, 0.860);
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 1s cubic-bezier(0.785, 0.135, 0.150, 0.860);
+    transform: translateX(0); /* Initial state */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* Align text at the bottom */
+    align-items: center;
+    overflow: hidden; /* Prevent overflow */
 }
 
+.ai3 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures the image covers the entire area */
+    z-index: -1; /* Places the image behind the text */
+    opacity: 0.8; /* Makes the image slightly opaque */
+    background-color: black; /* Optional: Adds a fallback background color */
+}
+.ai-title, .ai-subtitle {
+    position: relative;
+    z-index: 1; /* Ensure text appears above the image */
+    color: white;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); /* Add shadow for better readability */
+    margin: 5px 0;
+}
 .ai-card3-back {
-  transform: translateX(120%);
-  transition: transform 1s cubic-bezier(0.785, 0.135, 0.150, 0.860);
-}
-
-.ai-title {
-  font-size: 1.3rem;
-  font-weight: bold;
-}
-
-.ai-title::after {
-  content: "";
-  display: block;
-  width: 50%;
-  border-radius: 50%;
-  height: 2px;
-  margin: 2px auto;
-  background-color: #1b1b1b;
-}
-
-.ai-card3:hover {
-  background-color: #1b1b1b25;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform: translateX(120%); /* Initially off-screen */
+    transition: transform 1s cubic-bezier(0.785, 0.135, 0.150, 0.860);
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center vertically */
+    align-items: flex-start; /* Align text to the left */
+    padding: 20px; /* Add padding for spacing */
+    color: #084953; /* Change text color */
+    font-size: 0.8rem; /* Increase font size */
+    line-height: 1.5; /* Adjust line height for better readability */
 }
 
 .ai-card3:hover .ai-card3-front {
-  transform: translateX(-100%);
+    transform: translateX(-100%); /* Slide the front part out */
 }
 
 .ai-card3:hover .ai-card3-back {
-  transform: translateX(0);
+    transform: translateX(0); /* Slide the back part in */
 }
-
 /* Responsive Tweak */
 @media (max-width: 768px) {
   .ai-security-wrapper {
@@ -2021,6 +2037,10 @@ pre {
   object-fit: cover;
   display: block;
 }
+.content-left p {
+    margin-bottom: 1.5rem; /* Adds space between paragraphs */
+    line-height: 1.0; /* Improves readability */
+}
     </style>
 </head>
 
@@ -2079,6 +2099,91 @@ pre {
         <p>AI and cybersecurity are evolving. Are you keeping up?</p>
     </div>
 
+
+<section class="cyberpunk-news">
+  <!-- Article header -->
+  <header class="article-header">
+    <h1 class="title">Where Are We Now?</h1>
+    <p class="subtitle">Tracking the pulse of the digital frontier</p>
+  </header>
+
+  <!-- Main content area -->
+  <div class="article-content">
+    <!-- Left column: text -->
+    <div class="content-left">
+      <p>In today’s fast-paced digital landscape, the threats we face are evolving as quickly as the technology we rely on. Traditional encryption methods—while robust—remain largely static, designed for predictable patterns and fixed protocols. This leaves systems vulnerable to emerging attacks, especially in an era where sophisticated adversaries and automated intrusion tools can exploit even small weaknesses. The current state of encryption is strong, but it’s reactive rather than proactive, often blind to the subtle behavioral anomalies that precede breaches.
+
+Adaptive Hashing Encryption (AHE) takes a fundamentally different approach. Instead of being fixed, it’s dynamic and responsive. It continuously evaluates data integrity, user behavior, and environmental anomalies in real time. By integrating anomaly detection, behavioral profiling, and quantum-resistant hashing, AHE introduces a living, aware layer to encryption—one that adjusts to the context of each interaction and can anticipate potential threats before they escalate.
+
+This shift from static to adaptive encryption represents the next frontier in cybersecurity. The goal is to create a system that doesn’t just lock data away, but actively monitors, adapts, and protects it. By understanding patterns, detecting anomalies, and evolving its defenses automatically, this new generation of encryption moves beyond conventional cryptography and sets a new standard for security in a constantly changing digital world.</p>
+
+      <p>Adaptive Hashing Encryption (AHE) is not just a concept; it’s a paradigm shift in how we approach data security. By leveraging real-time anomaly detection and behavioral profiling, AHE transforms traditional encryption into a dynamic, responsive system that evolves with the threat landscape. This innovation is crucial for protecting sensitive information in an era where cyber threats are increasingly sophisticated and unpredictable.</p>
+    </div>
+
+      <!-- Right column: media placeholder -->
+    <div class="content-right">
+      <div class="image-placeholder">[Image / Video Here]</div>
+    </div>
+  </div>
+
+  <!-- Rolling ticker -->
+  <footer class="ticker">
+    <marquee behavior="scroll" direction="left">
+      ⚡ Breaking: AI encryption protocols updated | Cyber nodes active in sector 7G | New digital interface launched ⚡
+    </marquee>
+  </footer>
+</section>
+
+<style>
+.cyberpunk-news {
+  font-family: 'Orbitron', sans-serif;
+  color: #00ffff;
+  background-color: #0a0a0a;
+  padding: 2rem;
+}
+
+.article-header .title {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  border-bottom: 2px solid #00ffff;
+  display: inline-block;
+}
+
+.article-header .subtitle {
+  font-size: 1rem;
+  color: #66ffff;
+  margin-bottom: 2rem;
+}
+
+.article-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.content-left, .content-right {
+  flex: 1 1 300px;
+}
+
+.image-placeholder {
+  background-color: #111;
+  color: #00ffff;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #00ffff;
+}
+
+.ticker {
+  margin-top: 2rem;
+  font-size: 0.9rem;
+  color: #00ffcc;
+  border-top: 1px solid #00ffff;
+  padding-top: 0.5rem;
+}
+</style>
+    
    <section class="ai-security-section">
   <div class="ai-security-wrapper">
     <!-- Left Column -->
