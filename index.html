@@ -2489,15 +2489,17 @@ const PROXY = "https://cors-anywhere.herokuapp.com/"; // CORS proxy fallback
 
 async function fetchWithProxy(url, options) {
     try {
-        let res = await fetch(url, options);
-        if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+        let res = await fetch(url, options); // URL is plain here, no backticks needed
+        if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`); 
+        // Backticks needed around the string to interpolate ${res.status}
         return await res.json();
     } catch (err) {
-        console.warn("Direct fetch failed, retrying via CORS proxy...");
+        console.warn("Direct fetch failed, retrying via CORS proxy..."); // string only, no backticks needed
         // Retry using proxy
-        const proxiedURL = PROXY + url;
+        const proxiedURL = PROXY + url; // no backticks needed here
         const proxyRes = await fetch(proxiedURL, options);
-        if (!proxyRes.ok) throw new Error(Proxy `fetch failed! Status: ${proxyRes.status}`);
+        if (!proxyRes.ok) throw new Error(`Proxy fetch failed! Status: ${proxyRes.status}`);
+        // Backticks needed here as well for ${proxyRes.status}
         return await proxyRes.json();
     }
 }
@@ -2515,14 +2517,15 @@ async function encryptMessage() {
     resultElement.innerText = "Encrypting...";
 
     try {
-        const data = await fetchWithProxy(`${API_BASE}/encrypt`, {
+        const data = await fetchWithProxy(`${API_BASE}/encrypt`, { // Backticks required around ${API_BASE}/encrypt
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ message, password })
+            body: JSON.stringify({ message, password }) // object curly braces remain plain JS
         });
 
         if (data.error) {
-            resultElement.innerText = `Error: ${data.error}`;
+            resultElement.innerText = `Error: ${data.error}`; 
+            // Backticks required for ${data.error}
         } else {
             resultElement.innerText = `
 Status: ${data.status || "N/A"}
@@ -2533,11 +2536,13 @@ PQC Profile: ${data.pqc_profile || "N/A"}
 Entropy Score: ${data.entropy_score || "N/A"}
 Anomaly Detected: ${data.anomaly_detected ? "Yes" : "No"}
             `;
+            // Backticks required around this multi-line template literal
             document.getElementById('decrypt-message').value = data.encrypted;
         }
 
     } catch (err) {
-        resultElement.innerText = `Fetch error: ${err.message}`;
+        resultElement.innerText = `Fetch error: ${err.message}`; 
+        // Backticks required for ${err.message}
     }
 }
 
@@ -2553,14 +2558,15 @@ async function decryptMessage() {
     resultElement.innerText = "Decrypting...";
 
     try {
-        const data = await fetchWithProxy(`${API_BASE}/decrypt`, {
+        const data = await fetchWithProxy(`${API_BASE}/decrypt`, { // Backticks required around ${API_BASE}/decrypt
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ password })
         });
 
         if (data.error) {
-            resultElement.innerText = `Error: ${data.error}`;
+            resultElement.innerText = `Error: ${data.error}`; 
+            // Backticks required for ${data.error}
         } else {
             resultElement.innerText = `
 Status: ${data.status || "N/A"}
@@ -2568,13 +2574,14 @@ Decrypted: ${data.decrypted || "N/A"}
 Entropy Score: ${data.entropy_score || "N/A"}
 Anomaly Detected: ${data.anomaly_detected ? "Yes" : "No"}
             `;
+            // Backticks required around this multi-line template literal
         }
 
     } catch (err) {
-        resultElement.innerText = `Fetch error: ${err.message}`;
+        resultElement.innerText = `Fetch error: ${err.message}`; 
+        // Backticks required for ${err.message}
     }
 }
-
 </script>
 
 </html>
