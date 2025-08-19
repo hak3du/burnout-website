@@ -2487,19 +2487,19 @@ Blind: Most encryption doesn’t notice when it's being attacked — it just enc
 const API_BASE = "https://ahesdk-production.up.railway.app"; // Railway API URL
 const PROXY = "https://cors-anywhere.herokuapp.com/"; // CORS proxy fallback
 
+// Helper function to fetch with CORS proxy fallback
 async function fetchWithProxy(url, options) {
     try {
-        let res = await fetch(url, options); // URL is plain here, no backticks needed
-        if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`); 
-        // Backticks needed around the string to interpolate ${res.status}
+        // Direct fetch first
+        let res = await fetch(url, options);
+        if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`); // <-- backticks here
         return await res.json();
     } catch (err) {
-        console.warn("Direct fetch failed, retrying via CORS proxy..."); // string only, no backticks needed
+        console.warn("Direct fetch failed, retrying via CORS proxy...");
         // Retry using proxy
-        const proxiedURL = PROXY + url; // no backticks needed here
+        const proxiedURL = PROXY + url;
         const proxyRes = await fetch(proxiedURL, options);
-        if (!proxyRes.ok) throw new Error(`Proxy fetch failed! Status: ${proxyRes.status}`);
-        // Backticks needed here as well for ${proxyRes.status}
+        if (!proxyRes.ok) throw new Error(`Proxy fetch failed! Status: ${proxyRes.status}`); // <-- backticks here
         return await proxyRes.json();
     }
 }
@@ -2517,15 +2517,15 @@ async function encryptMessage() {
     resultElement.innerText = "Encrypting...";
 
     try {
-        const data = await fetchWithProxy(`${API_BASE}/encrypt`, { // Backticks required around ${API_BASE}/encrypt
+        // Note backticks for template literal
+        const data = await fetchWithProxy(`${API_BASE}/encrypt`, { // <-- backticks here
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ message, password }) // object curly braces remain plain JS
+            body: JSON.stringify({ message, password })
         });
 
         if (data.error) {
-            resultElement.innerText = `Error: ${data.error}`; 
-            // Backticks required for ${data.error}
+            resultElement.innerText = `Error: ${data.error}`; // <-- backticks here
         } else {
             resultElement.innerText = `
 Status: ${data.status || "N/A"}
@@ -2535,14 +2535,12 @@ Metadata Path: ${data.metadata_path || "N/A"}
 PQC Profile: ${data.pqc_profile || "N/A"}
 Entropy Score: ${data.entropy_score || "N/A"}
 Anomaly Detected: ${data.anomaly_detected ? "Yes" : "No"}
-            `;
-            // Backticks required around this multi-line template literal
+            `; // <-- backticks here
             document.getElementById('decrypt-message').value = data.encrypted;
         }
 
     } catch (err) {
-        resultElement.innerText = `Fetch error: ${err.message}`; 
-        // Backticks required for ${err.message}
+        resultElement.innerText = `Fetch error: ${err.message}`; // <-- backticks here
     }
 }
 
@@ -2558,28 +2556,25 @@ async function decryptMessage() {
     resultElement.innerText = "Decrypting...";
 
     try {
-        const data = await fetchWithProxy(`${API_BASE}/decrypt`, { // Backticks required around ${API_BASE}/decrypt
+        const data = await fetchWithProxy(`${API_BASE}/decrypt`, { // <-- backticks here
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ password })
         });
 
         if (data.error) {
-            resultElement.innerText = `Error: ${data.error}`; 
-            // Backticks required for ${data.error}
+            resultElement.innerText = `Error: ${data.error}`; // <-- backticks here
         } else {
             resultElement.innerText = `
 Status: ${data.status || "N/A"}
 Decrypted: ${data.decrypted || "N/A"}
 Entropy Score: ${data.entropy_score || "N/A"}
 Anomaly Detected: ${data.anomaly_detected ? "Yes" : "No"}
-            `;
-            // Backticks required around this multi-line template literal
+            `; // <-- backticks here
         }
 
     } catch (err) {
-        resultElement.innerText = `Fetch error: ${err.message}`; 
-        // Backticks required for ${err.message}
+        resultElement.innerText = `Fetch error: ${err.message}`; // <-- backticks here
     }
 }
 </script>
