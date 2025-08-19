@@ -2484,8 +2484,23 @@ Blind: Most encryption doesn’t notice when it's being attacked — it just enc
 
   setTimeout(loadLiveNews, 300);
 })();
+const API_BASE = "https://ahesdk-production.up.railway.app"; // Railway API URL
+const PROXY = "https://cors-anywhere.herokuapp.com/"; // CORS proxy fallback
 
-const API_BASE = "https://ahesdk-production.up.railway.app"; // Replace with your Railway API URL
+async function fetchWithProxy(url, options) {
+    try {
+        let res = await fetch(url, options);
+        if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+        return await res.json();
+    } catch (err) {
+        console.warn("Direct fetch failed, retrying via CORS proxy...");
+        // Retry using proxy
+        const proxiedURL = PROXY + url;
+        const proxyRes = await fetch(proxiedURL, options);
+        if (!proxyRes.ok) throw new Error(Proxy `fetch failed! Status: ${proxyRes.status}`);
+        return await proxyRes.json();
+    }
+}
 
 async function encryptMessage() {
     const message = document.getElementById('encrypt-message').value.trim();
@@ -2497,25 +2512,18 @@ async function encryptMessage() {
         return;
     }
 
-    resultElement.innerText = "Encrypting..."; // Show a loading message
+    resultElement.innerText = "Encrypting...";
 
     try {
-        const res = await fetch(`${API_BASE}/encrypt`, {
+        const data = await fetchWithProxy(`${API_BASE}/encrypt`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ message, password })
         });
 
-        if (!res.ok) {
-            throw new Error(`HTTP error! Status: ${res.status}`);
-        }
-
-        const data = await res.json();
-
         if (data.error) {
             resultElement.innerText = `Error: ${data.error}`;
         } else {
-            // Display all returned information
             resultElement.innerText = `
 Status: ${data.status || "N/A"}
 Encrypted: ${data.encrypted || "N/A"}
@@ -2525,13 +2533,15 @@ PQC Profile: ${data.pqc_profile || "N/A"}
 Entropy Score: ${data.entropy_score || "N/A"}
 Anomaly Detected: ${data.anomaly_detected ? "Yes" : "No"}
             `;
-            document.getElementById('decrypt-message').value = data.encrypted; // Autofill the encrypted message for decryption
+            document.getElementById('decrypt-message').value = data.encrypted;
         }
 
     } catch (err) {
         resultElement.innerText = `Fetch error: ${err.message}`;
     }
-}async function decryptMessage() {
+}
+
+async function decryptMessage() {
     const password = document.getElementById('decrypt-password').value.trim();
     const resultElement = document.getElementById('decrypt-result');
 
@@ -2540,25 +2550,18 @@ Anomaly Detected: ${data.anomaly_detected ? "Yes" : "No"}
         return;
     }
 
-    resultElement.innerText = "Decrypting..."; // Show a loading message
+    resultElement.innerText = "Decrypting...";
 
     try {
-        const res = await fetch(`${API_BASE}/decrypt`, {
+        const data = await fetchWithProxy(`${API_BASE}/decrypt`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ password })
         });
 
-        if (!res.ok) {
-            throw new Error(`HTTP error! Status: ${res.status}`);
-        }
-
-        const data = await res.json();
-
         if (data.error) {
             resultElement.innerText = `Error: ${data.error}`;
         } else {
-            // Display all returned information
             resultElement.innerText = `
 Status: ${data.status || "N/A"}
 Decrypted: ${data.decrypted || "N/A"}
